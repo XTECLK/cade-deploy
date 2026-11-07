@@ -5,12 +5,12 @@
 //   npm run deploy                deploy the version you chose
 //   npm run upgrade [-- v1.2.0]   choose another version, or the latest (main)
 //   npm run version               show the version you chose
-//   npm run group -- --name acme  any other Cade script, with its arguments
+//   npm run wrangler -- tail      any other Cade script, with its arguments
 //
 // Cade's code is not kept in this repo. It is checked out, at the version in
 // .cade/version.json, into .cade-src/, installed and built there, and the
-// script runs from it. What belongs to your deployment (cade.config.json, the
-// .cade/ folder, google/Secret.gs) stays here, which Cade finds through
+// script runs from it. What belongs to your deployment (cade.config.json and
+// the .cade/ folder) stays here, which Cade finds through
 // CADE_DEPLOY_DIR, so a change of version never touches it.
 import { spawn } from "node:child_process";
 import { dirname } from "node:path";
@@ -174,7 +174,7 @@ export function nodeProblem(wanted, current = process.versions.node) {
 
 export async function main(argv) {
   const [command, ...args] = argv;
-  if (!command) throw new Error("Usage: npm run <setup|deploy|upgrade|version|config|group|…>");
+  if (!command) throw new Error("Usage: npm run <setup|deploy|upgrade|version|config|…> (see package.json)");
   let { version, repo } = chosen();
 
   if (command === "version") {
