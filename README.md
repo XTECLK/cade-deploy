@@ -27,7 +27,7 @@ git add -A && git commit -m "Set up Cade" && git push
 | Path | What it is | Commit it? |
 | --- | --- | --- |
 | `.cade/version.json` | The Cade version you chose. | Yes |
-| `.cade/cloudflare.json` | Your Cloudflare account, the Worker's name, an optional custom `domain`. | Yes |
+| `.cade/cloudflare.json` | Your Cloudflare account, and an optional custom `domain`. | Yes |
 | `.cade/slack-app.json`, `.cade/google-app.json` | The IDs and addresses of your Slack app and Google script. No tokens. | Yes |
 | `cade.config.json` | Your settings: timezone, admins, and any projects you keep in the file. `npm run config` uploads it. | Yes |
 | `.cade-src/` | Cade's code at your version. Made for you. | No (ignored) |

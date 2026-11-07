@@ -21,7 +21,6 @@ import { fileURLToPath } from "node:url";
 export const DEPLOY_DIR = fileURLToPath(new URL("..", import.meta.url));
 const SRC_DIR = `${DEPLOY_DIR}.cade-src`;
 const VERSION_FILE = `${DEPLOY_DIR}.cade/version.json`;
-const CLOUDFLARE_FILE = `${DEPLOY_DIR}.cade/cloudflare.json`;
 export const DEFAULT_REPO = "https://github.com/XTECLK/Cade.git";
 export const LATEST = "main";
 
@@ -46,13 +45,6 @@ export const isLatest = (ref) => ref === LATEST;
 export function checkRef(ref) {
   if (!/^[\w][\w./-]{0,100}$/.test(ref) || ref.includes("..")) throw new Error(`"${ref}" isn't a version: use a release such as v1.2.0, or ${LATEST}.`);
   return ref;
-}
-
-// wrangler.toml with the Worker named `name` (kept in .cade/cloudflare.json,
-// so a change of version doesn't lose it).
-export function withWorkerName(toml, name) {
-  if (!/^[a-z0-9][a-z0-9-]{0,62}$/.test(name)) throw new Error("A Worker name is lowercase letters, digits and -, such as cade.");
-  return toml.replace(/^name = ".*"$/m, `name = "${name}"`);
 }
 
 function readJson(file) {
@@ -160,12 +152,6 @@ export async function prepare({ version, repo }, { refresh }) {
     writeFileSync(stamp, `${commit}\n`);
   }
 
-  // The Worker's name is your deployment's, not the code's.
-  const { workerName } = readJson(CLOUDFLARE_FILE);
-  if (workerName) {
-    const file = `${SRC_DIR}/wrangler.toml`;
-    writeFileSync(file, withWorkerName(readFileSync(file, "utf8"), workerName));
-  }
   return commit;
 }
 
