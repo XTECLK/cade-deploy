@@ -30,7 +30,7 @@ git add -A && git commit -m "Set up Cade" && git push
 | `.cade/cloudflare.json` | Your Cloudflare account, the Worker's name, an optional custom `domain`. | Yes |
 | `.cade/slack-app.json`, `.cade/google-app.json` | The IDs and addresses of your Slack app and Google script. No tokens. | Yes |
 | `cade.config.json` | Your settings: projects, timezone, admins. `npm run config` uploads it. | Yes |
-| `google/Secret.gs` | The secret shared by the Worker and the Google script. | Only in a private repo you trust your team with |
+| `google/Secret.gs` | The secret shared by the Worker and the Google script. `npm run group` needs it to make a project's Doc; `google:update` doesn't (the script keeps its own copy). | Only in a private repo you trust your team with |
 | `.cade-src/` | Cade's code at your version. Made for you. | No (ignored) |
 
 Tokens and secrets are asked for by the scripts, hidden, and kept only in Cloudflare.
