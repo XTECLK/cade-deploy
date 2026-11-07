@@ -1,0 +1,22 @@
+{
+  "name": "cade-deploy",
+  "private": true,
+  "type": "module",
+  "description": "Your deployment of Cade: its settings, kept apart from Cade's code, which is checked out at the version you choose.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "setup": "node scripts/cade.mjs setup",
+    "upgrade": "node scripts/cade.mjs upgrade",
+    "version": "node scripts/cade.mjs version",
+    "deploy": "node scripts/cade.mjs deploy",
+    "config": "node scripts/cade.mjs config",
+    "group": "node scripts/cade.mjs group",
+    "slack:create": "node scripts/cade.mjs slack:create",
+    "slack:update": "node scripts/cade.mjs slack:update",
+    "google:create": "node scripts/cade.mjs google:create",
+    "google:update": "node scripts/cade.mjs google:update",
+    "db:migrate": "node scripts/cade.mjs db:migrate",
+    "dev": "node scripts/cade.mjs dev",
+    "test": "node --test"
+  }
+}

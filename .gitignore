@@ -1,0 +1,12 @@
+# Cade's code, checked out at your version by scripts/cade.mjs.
+.cade-src/
+node_modules/
+.DS_Store
+.idea
+# Local settings for npm run dev.
+.dev.vars
+
+# Secret.gs is the secret shared by the Worker and the Google web app. Leave it
+# out of a repo others can read; with it, anyone can call the web app.
+# If this repo is private and your team deploys from it, you may commit it.
+google/Secret.gs
