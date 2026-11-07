@@ -10,7 +10,6 @@
     "version": "node scripts/cade.mjs version",
     "deploy": "node scripts/cade.mjs deploy",
     "config": "node scripts/cade.mjs config",
-    "group": "node scripts/cade.mjs group",
     "slack:create": "node scripts/cade.mjs slack:create",
     "slack:update": "node scripts/cade.mjs slack:update",
     "google:create": "node scripts/cade.mjs google:create",

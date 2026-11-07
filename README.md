@@ -14,7 +14,7 @@ cd cade-deploy
 npm run setup
 ```
 
-`npm run setup` asks which version of Cade to deploy: a release, or `main`, the latest development version. It then checks that version out into `.cade-src/`, installs it, and takes you through Cloudflare, the Slack app, the Google Doc and your first project. Run it again to carry on if it stops.
+`npm run setup` asks which version of Cade to deploy: a release, or `main`, the latest development version. It then checks that version out into `.cade-src/`, installs it, and takes you through Cloudflare, the Slack app, the Google Doc and the first admin. Then, in Slack, you create a channel, invite Cade (`/invite @Cade`), open Cade's Home tab and click **Add project**. Run it again to carry on if it stops.
 
 Commit what it made when it finishes:
 
@@ -29,11 +29,10 @@ git add -A && git commit -m "Set up Cade" && git push
 | `.cade/version.json` | The Cade version you chose. | Yes |
 | `.cade/cloudflare.json` | Your Cloudflare account, the Worker's name, an optional custom `domain`. | Yes |
 | `.cade/slack-app.json`, `.cade/google-app.json` | The IDs and addresses of your Slack app and Google script. No tokens. | Yes |
-| `cade.config.json` | Your settings: projects, timezone, admins. `npm run config` uploads it. | Yes |
-| `google/Secret.gs` | The secret shared by the Worker and the Google script. `npm run group` needs it to make a project's Doc; `google:update` doesn't (the script keeps its own copy). | Only in a private repo you trust your team with |
+| `cade.config.json` | Your settings: timezone, admins, and any projects you keep in the file. `npm run config` uploads it. | Yes |
 | `.cade-src/` | Cade's code at your version. Made for you. | No (ignored) |
 
-Tokens and secrets are asked for by the scripts, hidden, and kept only in Cloudflare.
+Tokens and secrets are asked for by the scripts, hidden, and kept only in Cloudflare (and the Google script's own properties). Nothing here holds a secret.
 
 ## Day to day
 
@@ -41,7 +40,6 @@ Every Cade script runs here with the same name. Everything after `--` goes to th
 
 ```sh
 npm run config                              # upload cade.config.json
-npm run group -- --name acme --channel C…   # add or change a project
 npm run deploy                              # deploy the chosen version
 npm run dev                                 # run it locally
 ```

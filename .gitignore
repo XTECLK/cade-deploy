@@ -6,7 +6,6 @@ node_modules/
 # Local settings for npm run dev.
 .dev.vars
 
-# Secret.gs is the secret shared by the Worker and the Google web app. Leave it
-# out of a repo others can read; with it, anyone can call the web app.
-# If this repo is private and your team deploys from it, you may commit it.
+# Only an older Cade kept the Google web app's secret in this file; keep it out
+# of git if you still have one.
 google/Secret.gs
