@@ -155,6 +155,23 @@ export async function prepare({ version, repo }, { refresh }) {
   return commit;
 }
 
+// Why this Node.js can't run Cade's scripts, from the Node.js its package.json asks for (`engines.node`,
+// such as ">=22.18"), or undefined if it can, or the version asks for nothing this can read. Checked
+// before running them: an older Node.js would otherwise stop with an error that doesn't say why.
+export function nodeProblem(wanted, current = process.versions.node) {
+  const match = /^>=\s*(\d+)(?:\.(\d+))?(?:\.(\d+))?$/.exec(String(wanted ?? "").trim());
+  if (!match) return undefined;
+  const need = match.slice(1).map((part) => Number(part ?? 0));
+  const have = current.split(".").map(Number);
+  for (const [i, part] of need.entries()) {
+    if ((have[i] ?? 0) > part) return undefined;
+    if ((have[i] ?? 0) < part) {
+      return `This version of Cade needs Node.js ${need.join(".")} or newer, and this is Node.js ${current}. Install a newer Node.js (https://nodejs.org), then run this again.`;
+    }
+  }
+  return undefined;
+}
+
 export async function main(argv) {
   const [command, ...args] = argv;
   if (!command) throw new Error("Usage: npm run <setup|deploy|upgrade|version|config|group|…>");
@@ -174,6 +191,8 @@ export async function main(argv) {
   }
 
   const commit = await prepare({ version, repo }, { refresh: isLatest(version) && REFRESHING.has(command) });
+  const problem = nodeProblem(readJson(`${SRC_DIR}/package.json`).engines?.node);
+  if (problem) throw new Error(problem);
   if (command === "upgrade") {
     // Upgrading is the version change plus the deploy of it, which setup also does itself.
     console.log(`\nCade ${version} (${commit.slice(0, 7)}) is ready. Deploy it with npm run deploy;`);

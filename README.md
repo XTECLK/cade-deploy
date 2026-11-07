@@ -6,7 +6,7 @@ Your own deployment of [Cade](https://github.com/XTECLK/Cade), the Slack app for
 
 ## Set up
 
-You need Node.js 20 or newer, git, a Cloudflare account (free is enough), a Slack workspace where you can create apps, and a Google account.
+You need Node.js 22.18 or newer, git, a Cloudflare account (free is enough), a Slack workspace where you can create apps, and a Google account.
 
 ```sh
 git clone https://github.com/<you>/<your copy>.git cade-deploy

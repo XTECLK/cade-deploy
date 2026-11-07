@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "description": "Your deployment of Cade: its settings, kept apart from Cade's code, which is checked out at the version you choose.",
-  "engines": { "node": ">=20" },
+  "engines": { "node": ">=22.18" },
   "scripts": {
     "setup": "node scripts/cade.mjs setup",
     "upgrade": "node scripts/cade.mjs upgrade",
