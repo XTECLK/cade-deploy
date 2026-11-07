@@ -42,6 +42,8 @@ Every Cade script runs here with the same name. Everything after `--` goes to th
 npm run config                              # upload cade.config.json
 npm run deploy                              # deploy the chosen version
 npm run dev                                 # run it locally
+npm run wrangler -- tail                    # wrangler, on your account (logs, secrets…)
+npm run clasp -- login                      # clasp, for the Google script
 ```
 
 ## Update Cade
