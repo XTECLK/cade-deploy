@@ -26,7 +26,7 @@ export const LATEST = "main";
 
 // Scripts that change what is deployed. For the latest (main), they bring in
 // its newest changes first; the others work on the code as it already is.
-const REFRESHING = new Set(["setup", "deploy", "upgrade", "slack:update", "google:update", "db:migrate"]);
+const REFRESHING = new Set(["setup", "deploy", "upgrade", "slack:update", "db:migrate"]);
 
 // The release tags (v1.2.3 or 1.2.3) in `git ls-remote --tags` output, newest first.
 export function releasesIn(output) {
@@ -196,7 +196,7 @@ export async function main(argv) {
   if (command === "upgrade") {
     // Upgrading is the version change plus the deploy of it, which setup also does itself.
     console.log(`\nCade ${version} (${commit.slice(0, 7)}) is ready. Deploy it with npm run deploy;`);
-    console.log("run npm run slack:update and npm run google:update too if its release notes say the Slack app or the Google script changed.");
+    console.log("run npm run slack:update too if its release notes say the Slack app changed.");
     return 0;
   }
   const script = command;

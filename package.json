@@ -10,14 +10,12 @@
     "version": "node scripts/cade.mjs version",
     "deploy": "node scripts/cade.mjs deploy",
     "config": "node scripts/cade.mjs config",
+    "prompts": "node scripts/cade.mjs prompts",
     "slack:create": "node scripts/cade.mjs slack:create",
     "slack:update": "node scripts/cade.mjs slack:update",
-    "google:create": "node scripts/cade.mjs google:create",
-    "google:update": "node scripts/cade.mjs google:update",
     "db:migrate": "node scripts/cade.mjs db:migrate",
     "dev": "node scripts/cade.mjs dev",
     "wrangler": "node scripts/cade.mjs wrangler",
-    "clasp": "node scripts/cade.mjs clasp",
     "test": "node --test"
   }
 }
