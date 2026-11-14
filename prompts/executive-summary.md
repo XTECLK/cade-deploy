@@ -23,12 +23,13 @@ call, the **executive-summary-after-call** prompt brings the tasks in line with 
 ## 2. Gather
 
 1. `get_tasks` with `project`, `completed_from` and `completed_to` (the period, YYYY-MM-DD),
-   `include_open: true`, `status` left out, and `fields` adding `summary` and `notes`: the tasks done in
-   the period, and those not done. Raise `limit` if `total` is larger than what came back.
+   `include_open: true` and `status` left out: the tasks done in the period, and those not done. Raise
+   `limit` if `total` is larger than what came back.
 2. For each task not done: `get_task` (its subtasks and pull requests, each open, merged or closed) and
    `get_task_history` (what happened in the period). Read its subtasks' threads too
    (`get_task_history` on each), when they say how the whole task is going.
-3. For tasks done in the period, the summary and the card are usually enough; read the thread when
+3. For tasks done in the period, the card and `get_task_summary` (save what you write with
+   `save_task_summary`, as the **task-summary** prompt does) are usually enough; read the thread when
    what was delivered isn't clear from them.
 
 ## 3. Draft

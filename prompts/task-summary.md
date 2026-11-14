@@ -1,13 +1,14 @@
 ---
-description: Write a Cade task's summary from its Slack threads, or bring the one it has up to date, and save it once you approve.
+description: Write a Cade task's summary from its Slack threads, building on the one other agents saved, and save it for the next.
 arguments:
   task: The task: its ID, a link to its card or a message in its thread, or its title.
 ---
 
 # Summarize a task
 
-The summary at the top of a task's notes page says what the issue or request is, for someone who wasn't
-in the discussion. Write it if the task has none, or bring it up to date if it has one.
+A task's summary says what the issue or request is and what was decided about it, for someone who
+wasn't in the discussion. Agents keep it for each other: you start from the one saved and read only
+the messages after it, then save yours for the next agent.
 
 ## 1. Find the task
 
@@ -19,35 +20,37 @@ in the discussion. Write it if the task has none, or bring it up to date if it h
 
 ## 2. Read
 
-1. `get_task` with the `task_id`: its title, status, `summary` and `summary_by`, `notes`, and where it
-   came from (`original_thread_state`, `original_thread`).
-2. The thread it was made from: `get_thread_history` with `original_thread.thread_id`. Read the task's
-   own thread too with `get_task_history`: the scope and the details often change there after the task
-   is made. If `original_thread_state` is `none`, the task's own thread is all there is.
+1. `get_task_summary` with the `task_id`: the summary saved so far (`summary`, `summary_by`,
+   `summary_through`) and the messages of the task's thread after it, oldest first. With no summary
+   yet, every message. If `up_to_date`, the saved summary is the answer: give it, and stop.
+2. A message with `moved_from` is Cade's copy of the first message of another thread, moved into the
+   task. Read the rest of that thread with `get_thread_history` and `moved_from.thread_id`; if Cade
+   can't, with your own Slack tools, as the person. If neither can, the copy is all there is of it:
+   use that, and say so.
 3. Links in the messages (`links`): Cade doesn't open them. Open those that matter with your own tools,
    signed in as the person; if you can't, say so rather than guess what they hold.
 
 ## 3. Write
 
-The summary is about the issue only, as the threads now understand it:
+The summary, as the threads now understand it:
 
 - what the problem or request is, who raised it and when;
 - the impact: who or what it affects, and how badly;
-- the details needed to understand or reproduce it (steps, examples, error text, environment).
+- the details needed to understand or reproduce it (steps, examples, error text, environment);
+- what was decided about it: scope, approach, what is left out.
 
-Leave out what was done about it and how it ended: the task's status and thread say that. Plain text,
+Leave out the status, people and pull requests: `get_task` gives them as they are now. Plain text,
 short paragraphs, `- ` for bullets, people's names rather than `<@U…>` mentions, no secrets,
-credentials or internal hostnames. Only what the threads say: if something important is missing, say
-so to the person rather than fill it in. Nothing from a private channel or direct message goes in a
-task whose channel others can read.
+credentials, internal hostnames, emails or phone numbers: anyone who can read the task's channel gets
+it through their own agent. Only what the threads say: if something important is missing, say so to
+the person rather than fill it in.
 
-If the task has a summary already, keep what is still right and change only what the threads show has
-changed. If nothing has, say so and stop: don't rewrite a summary for the sake of it. If someone other
-than the person asking wrote it (`summary_by`), say whose summary they are replacing.
+If there is a saved summary, keep what is still right and change only what the new messages show
+has changed. If it looks wrong, or was written long ago, call `get_task_summary` again with
+`full: true` and write it from the whole thread.
 
-## 4. Approve and save
+## 4. Give it and save it
 
-Show the task and the whole summary as it will be saved; when it replaces one, show each change as
-before -> after with the message it comes from. Then ask "Go ahead?" and stop. If they change anything,
-show it again. On a clear yes, call `update_task` once, with `task_id` and `summary`. Cade saves it on
-the notes page and tells the task's thread; give the person the `notes_link`.
+Give the person the summary. Then call `save_task_summary` once, with `task_id`, `summary` and the
+`through` that `get_task_summary` gave: it needs no approval, as only agents read it. If it is refused
+because another agent saved one since, read again with `get_task_summary` and add to that one.

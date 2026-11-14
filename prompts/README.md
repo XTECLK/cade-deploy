@@ -1,19 +1,20 @@
 # Prompts
 
 Your team's workflows for Cade, offered by its MCP server to everyone who connects an AI agent
-(`prompts/list`, `prompts/get`). A person picks one in their agent. In Claude Code, for example:
+(`prompts/list`, `prompts/get`). A person picks one in their agent, or an agent reads one itself with the
+`get_prompt` tool when a Cade tool points to it. In Claude Code, for example, a person picks one with:
 `/mcp__cade__task-summary C0123ABCD:1700000000.000100`.
 
 They're yours: change these examples to fit your team, remove the ones you don't use, and add your own.
 
 | Prompt | What it does |
 | --- | --- |
-| `task-summary` | Writes a task's summary from its Slack threads, or brings the one it has up to date. |
+| `task-summary` | Writes a task's summary from its Slack threads, or brings the one saved up to date, and saves it for the next agent. |
 | `executive-summary` | Writes an executive summary of a project for a client, for a period, into your team's own document. |
 | `executive-summary-after-call` | After the client call, brings the project's tasks in line with what was decided. |
 
-After a task is made from a message, Cade shows the `task-summary` slash command, as long as you have
-a prompt with that name.
+Cade points an agent asked for a task's summary to the `task-summary` prompt (with `get_prompt`), as long
+as you have a prompt with that name, so asking in plain words follows it too.
 
 ## Saving them
 
