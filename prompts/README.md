@@ -13,6 +13,10 @@ They're yours: change these examples to fit your team, remove the ones you don't
 | `executive-summary` | Writes an executive summary of a project for a client, for a period, into your team's own document. |
 | `executive-summary-after-call` | After the client call, brings the project's tasks in line with what was decided. |
 
+A prompt's `description` is how both people and agents pick it: the agent lists the prompts with
+`get_prompts` and follows the one that fits a request. Start it with when to use it ("For a task's
+summary or progress."), then say what it does.
+
 Cade points an agent asked for a task's summary to the `task-summary` prompt (with `get_prompt`), as long
 as you have a prompt with that name, so asking in plain words follows it too.
 

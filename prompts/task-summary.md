@@ -1,5 +1,5 @@
 ---
-description: Summarize a Cade task and its subtasks from their Slack threads, building on the summaries other agents saved, and save each for the next.
+description: For a task's summary or progress, or how it is going. Summarizes it and its subtasks from their threads, building on the summaries saved, and saves each for the next agent.
 arguments:
   task: The task: its ID, a link to its card or a message in its thread, or its title.
 ---

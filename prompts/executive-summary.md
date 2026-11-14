@@ -1,5 +1,5 @@
 ---
-description: Write an executive summary of a Cade project for a client, for a period (what was done, and how the open work is going), into your team's own document once you approve.
+description: For a client report on a project over a period. Writes what was done and how the open work is going into your team's document, once you approve.
 arguments:
   project: The project, by name.
   period?: The period it covers, such as 2026-11-01 to 2026-11-14 or "the last two weeks". Left out, it starts where the last summary ended.

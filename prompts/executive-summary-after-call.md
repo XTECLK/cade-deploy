@@ -1,5 +1,5 @@
 ---
-description: After a client call on an executive summary, bring the project's Cade tasks in line with what was decided, one task at a time, as you approve.
+description: After a client call on an executive summary. Brings the project's tasks in line with what was decided, one task at a time, as you approve.
 arguments:
   project: The project, by name.
   summary?: Where the summary the call went through is: a link to the document, or which one in it.
