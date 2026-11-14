@@ -1,5 +1,5 @@
 ---
-description: Write a Cade task's summary from its Slack threads, building on the one other agents saved, and save it for the next.
+description: Summarize a Cade task and its subtasks from their Slack threads, building on the summaries other agents saved, and save each for the next.
 arguments:
   task: The task: its ID, a link to its card or a message in its thread, or its title.
 ---
@@ -7,8 +7,10 @@ arguments:
 # Summarize a task
 
 A task's summary says what the issue or request is and what was decided about it, for someone who
-wasn't in the discussion. Agents keep it for each other: you start from the one saved and read only
-the messages after it, then save yours for the next agent.
+wasn't in the discussion. Every task and every subtask has a summary of its own thread only, which
+agents keep for each other: you start from the one saved, read only the messages after it, and save
+yours for the next agent. The whole picture of a task with subtasks is put together from those
+summaries when someone asks, and isn't saved.
 
 ## 1. Find the task
 
@@ -18,39 +20,50 @@ the messages after it, then save yours for the next agent.
 - A title or a description: `get_tasks`, and pick the one that matches. If more than one could be
   meant, or none, ask.
 
-## 2. Read
+Then `get_task` with `fields` `["title", "status", "parent", "subtasks"]`: its `subtasks` (each with
+its own thread, one level deep), or its `parent` when it is a subtask itself.
 
-1. `get_task_summary` with the `task_id`: the summary saved so far (`summary`, `summary_by`,
-   `summary_through`) and the messages of the task's thread after it, oldest first. With no summary
-   yet, every message. If `up_to_date`, the saved summary is the answer: give it, and stop.
+## 2. Bring each summary up to date
+
+Do this for the task, then for each of its `subtasks`, Done ones too. Each summary covers that task's
+own thread only: don't copy a subtask's summary into the task's.
+
+1. `get_task_summary` with its `task_id`: the summary saved so far (`summary`, `summary_by`,
+   `summary_through`) and the messages of its thread after it, oldest first. With no summary yet,
+   every message. If `up_to_date`, the saved summary is current: use it as it is, and go on to the
+   next.
 2. A message with `moved_from` is Cade's copy of the first message of another thread, moved into the
    task. Read the rest of that thread with `get_thread_history` and `moved_from.thread_id`; if Cade
    can't, with your own Slack tools, as the person. If neither can, the copy is all there is of it:
    use that, and say so.
 3. Links in the messages (`links`): Cade doesn't open them. Open those that matter with your own tools,
    signed in as the person; if you can't, say so rather than guess what they hold.
+4. Write its summary, as its thread now understands it:
+   - what the problem or request is, who raised it and when;
+   - the impact: who or what it affects, and how badly;
+   - the details needed to understand or reproduce it (steps, examples, error text, environment);
+   - what was decided about it: scope, approach, what is left out.
 
-## 3. Write
+   Leave out the status, people and pull requests: `get_task` gives them as they are now. Plain text,
+   short paragraphs, `- ` for bullets, people's names rather than `<@U…>` mentions, no secrets,
+   credentials, internal hostnames, emails or phone numbers: anyone who can read the task's channel
+   gets it through their own agent. Only what the thread says: if something important is missing,
+   say so to the person rather than fill it in. With a saved summary, keep what is still right and
+   change only what the new messages show has changed. If it looks wrong, or was written long ago,
+   call `get_task_summary` again with `full: true` and write it from the whole thread.
+5. Save it: `save_task_summary` once, with its `task_id`, `summary` and the `through` that
+   `get_task_summary` gave. It needs no approval, as only agents read it. If it is refused because
+   another agent saved one since, read again with `get_task_summary` and add to that one.
 
-The summary, as the threads now understand it:
+## 3. Give the whole picture
 
-- what the problem or request is, who raised it and when;
-- the impact: who or what it affects, and how badly;
-- the details needed to understand or reproduce it (steps, examples, error text, environment);
-- what was decided about it: scope, approach, what is left out.
+Give the person one summary, put together from those:
 
-Leave out the status, people and pull requests: `get_task` gives them as they are now. Plain text,
-short paragraphs, `- ` for bullets, people's names rather than `<@U…>` mentions, no secrets,
-credentials, internal hostnames, emails or phone numbers: anyone who can read the task's channel gets
-it through their own agent. Only what the threads say: if something important is missing, say so to
-the person rather than fill it in.
+- the task's own summary;
+- then, for each subtask, its title and status, and the gist of its summary in a line or two: what
+  the part or the issue found is, and what was decided about it.
 
-If there is a saved summary, keep what is still right and change only what the new messages show
-has changed. If it looks wrong, or was written long ago, call `get_task_summary` again with
-`full: true` and write it from the whole thread.
+Say which summaries you brought up to date and which were current already. This picture isn't saved:
+the next agent puts it together again from the summaries, each brought up to date on its own.
 
-## 4. Give it and save it
-
-Give the person the summary. Then call `save_task_summary` once, with `task_id`, `summary` and the
-`through` that `get_task_summary` gave: it needs no approval, as only agents read it. If it is refused
-because another agent saved one since, read again with `get_task_summary` and add to that one.
+For a subtask asked about on its own, give its summary, and name the task it is part of (`parent`).

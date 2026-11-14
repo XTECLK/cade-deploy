@@ -9,7 +9,7 @@ They're yours: change these examples to fit your team, remove the ones you don't
 
 | Prompt | What it does |
 | --- | --- |
-| `task-summary` | Writes a task's summary from its Slack threads, or brings the one saved up to date, and saves it for the next agent. |
+| `task-summary` | Summarizes a task and its subtasks: brings each one's own summary up to date and saves it for the next agent, then gives the whole picture. |
 | `executive-summary` | Writes an executive summary of a project for a client, for a period, into your team's own document. |
 | `executive-summary-after-call` | After the client call, brings the project's tasks in line with what was decided. |
 
